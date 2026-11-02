@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#18342d" />
+  <meta name="description" content="Prototipo académico navegable para consultar horarios, avisos y una ruta simulada de recolección." />
+  <title>RastreaTuBasura | Demo académica</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="demo-banner"><span class="pulse"></span> DEMOSTRACIÓN ACADÉMICA · Datos y ubicación simulados · No es un servicio oficial</div>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="RastreaTuBasura, inicio">
+      <span class="brand-mark" aria-hidden="true">♻</span>
+      <span><strong>RastreaTuBasura</strong><small>Información para separar y disponer</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <button class="nav-link active" data-view="inicio">Inicio</button>
+      <button class="nav-link" data-view="horarios">Horarios</button>
+      <button class="nav-link" data-view="avisos">Avisos <span class="nav-count" id="noticeCount">3</span></button>
+      <button class="nav-link" data-view="rastreo">Ruta simulada</button>
+    </nav>
+    <button class="icon-button notification-button" id="notificationsButton" aria-label="Abrir notificaciones de demostración" title="Notificaciones de demostración">
+      <span aria-hidden="true">♧</span><i id="unreadDot"></i>
+    </button>
+  </header>
+
+  <main id="mainContent" tabindex="-1">
+    <section class="view active" id="view-inicio">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="leaf">✦</span> Tu zona, más informada</div>
+          <h1>La recolección,<br /><em>más fácil de seguir.</em></h1>
+          <p>Consulta horarios de demostración, revisa novedades y conoce el recorrido simulado del vehículo en un mismo lugar.</p>
+          <div class="hero-actions">
+            <button class="button primary" data-go="horarios">Consultar mi horario <span>→</span></button>
+            <button class="button quiet" data-go="rastreo">Ver ruta simulada</button>
+          </div>
+          <div class="trust-line"><span>●</span> Prototipo académico · Información ficticia</div>
+        </div>
+        <div class="hero-art" aria-label="Ilustración de una hoja y un camión de recolección" role="img">
+          <div class="sun"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="leaf-illustration">♻</div>
+          <div class="truck-card"><span class="truck-icon">▰</span><span><b>Vehículo de prueba</b><small>Recorrido simulado</small></span><span class="live-pill">DEMO</span></div>
+          <div class="art-label">♧ &nbsp; Separar · Disponer · Cuidar</div>
+        </div>
+      </div>
+
+      <div class="zone-strip">
+        <div><span class="mini-label">ESTÁS EXPLORANDO</span><strong id="activeZoneLabel">Sector Norte · Zona de demostración</strong></div>
+        <label class="zone-picker">Cambiar zona
+          <select id="zoneSelect" aria-label="Seleccionar zona de demostración">
+            <option value="norte">Sector Norte</option><option value="centro">Sector Centro</option><option value="sur">Sector Sur</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="section-heading"><div><span class="mini-label">PARA HOY</span><h2>Lo que necesitas saber</h2></div><button class="text-link" data-go="avisos">Ver todos los avisos <span>→</span></button></div>
+      <div class="summary-grid">
+        <article class="summary-card next-card"><div class="card-top"><span class="card-icon green">◷</span><span class="status-tag">PRÓXIMA RECOLECCIÓN</span></div><h3 id="nextService">Lunes · 7:00 a. m.</h3><p id="nextWaste">Residuos ordinarios y orgánicos</p><button class="text-link" data-go="horarios">Ver calendario <span>→</span></button></article>
+        <article class="summary-card notice-preview"><div class="card-top"><span class="card-icon amber">✦</span><span class="status-tag">AVISO RECIENTE</span></div><h3 id="latestNoticeTitle">Jornada de recolección de prueba</h3><p id="latestNoticeMeta">Informativo · 2 nov 2026</p><button class="text-link" id="openLatestNotice">Leer aviso <span>→</span></button></article>
+        <article class="summary-card tracker-preview"><div class="card-top"><span class="card-icon blue">⌖</span><span class="status-tag">UBICACIÓN DE DEMO</span></div><h3 id="trackerStatus">Vehículo en recorrido</h3><p id="trackerMeta">Última actualización simulada · 8:30 a. m.</p><button class="text-link" data-go="rastreo">Abrir mapa simulado <span>→</span></button></article>
+      </div>
+      <div class="bottom-note"><span>ⓘ</span><p>Los horarios y avisos son ejemplos creados para evaluar el prototipo. Confirma siempre la información real con el prestador de tu servicio.</p></div>
+    </section>
+
+    <section class="view" id="view-horarios">
+      <div class="page-heading"><div><span class="mini-label">PLANIFICA TU DISPOSICIÓN</span><h1>Horarios de recolección</h1><p>Elige una zona para consultar el calendario de demostración.</p></div><span class="demo-chip">HORARIOS FICTICIOS</span></div>
+      <div class="schedule-controls"><div class="zone-control"><span class="control-icon">⌖</span><div><small>ZONA SELECCIONADA</small><strong id="scheduleZone">Sector Norte</strong></div><select id="scheduleZoneSelect" aria-label="Cambiar zona del horario"><option value="norte">Sector Norte</option><option value="centro">Sector Centro</option><option value="sur">Sector Sur</option></select></div><div class="schedule-hint"><span>ⓘ</span> Este calendario es de muestra y puede no coincidir con rutas oficiales.</div></div>
+      <div class="schedule-list" id="scheduleList"></div>
+      <div class="how-to-card"><div class="how-icon">♧</div><div><h3>¿Cómo preparar tus residuos?</h3><p>Separa los materiales aprovechables, mantén los residuos en bolsas cerradas y sácalos cerca de la hora indicada. Consulta las normas locales vigentes.</p></div></div>
+    </section>
+
+    <section class="view" id="view-avisos">
+      <div class="page-heading"><div><span class="mini-label">ACTUALIZACIONES DEL SERVICIO</span><h1>Avisos y novedades</h1><p>Mensajes de muestra organizados por tipo y fecha.</p></div><span class="demo-chip">CONTENIDO SIMULADO</span></div>
+      <div class="filter-row" role="group" aria-label="Filtrar avisos">
+        <button class="filter-chip selected" data-filter="todos">Todos <span>3</span></button>
+        <button class="filter-chip" data-filter="cambio">Cambios</button>
+        <button class="filter-chip" data-filter="retraso">Retrasos</button>
+        <button class="filter-chip" data-filter="informativo">Informativos</button>
+      </div>
+      <div class="notice-list" id="noticeList"></div>
+      <div class="bottom-note"><span>ⓘ</span><p>Estos avisos no han sido publicados por una empresa de aseo ni corresponden a un evento real.</p></div>
+    </section>
+
+    <section class="view" id="view-rastreo">
+      <div class="page-heading"><div><span class="mini-label">RECORRIDO DE EJEMPLO</span><h1>Ruta del vehículo</h1><p>Explora una ubicación simulada para evaluar esta pantalla.</p></div><span class="demo-chip warning">SIN GPS REAL</span></div>
+      <div class="tracker-layout">
+        <div class="map-panel">
+          <div class="map-toolbar"><span class="map-zone"><span>⌖</span><strong id="mapZone">Sector Norte</strong></span><span class="map-updated"><span class="pulse"></span> Simulación activa</span></div>
+          <div class="demo-map" id="demoMap" role="img" aria-label="Mapa esquemático de una ruta simulada">
+            <svg class="street-map" viewBox="0 0 760 430" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="760" height="430" fill="#eef3eb"/>
+              <path d="M-20 90 C100 40 160 150 280 100 S450 40 560 100 S690 160 790 70"/><path d="M-20 210 C100 150 190 260 300 205 S470 150 570 210 S690 280 790 180"/><path d="M-10 340 C90 290 210 390 310 335 S470 280 570 340 S690 400 790 310"/>
+              <path d="M120 -20 C170 90 90 140 150 240 S220 330 160 460"/><path d="M330 -20 C380 70 290 140 360 220 S420 340 360 460"/><path d="M540 -20 C600 80 490 140 560 240 S620 340 570 460"/>
+              <path class="park" d="M30 45h110v62H30zM395 260h100v90H395zM620 35h100v80H620z"/>
+              <text x="42" y="80">Parque de muestra</text><text x="414" y="309">Zona verde</text><text x="637" y="78">Sector A</text>
+              <path class="route-line" id="routeLine" d="M115 340 C180 285 200 270 255 255 S340 180 405 190 S485 235 555 180 S635 145 670 110"/>
+            </svg>
+            <div class="route-stop stop-a"><span>1</span></div><div class="route-stop stop-b"><span>2</span></div><div class="route-stop stop-c"><span>3</span></div>
+            <div class="vehicle-marker" id="vehicleMarker"><span>▰</span></div>
+            <div class="map-legend"><span><i class="legend-route"></i> Ruta de ejemplo</span><span><i class="legend-truck">▰</i> Vehículo simulado</span></div>
+            <div class="map-stamp">MAPA ESQUEMÁTICO · NO GEOGRÁFICO</div>
+          </div>
+        </div>
+        <aside class="route-details"><div class="route-status"><div><span class="mini-label">ESTADO DE DEMOSTRACIÓN</span><h2 id="routeState">En recorrido</h2></div><span class="route-status-icon">▰</span></div>
+          <div class="detail-row"><span class="detail-icon">◷</span><div><small>ACTUALIZACIÓN SIMULADA</small><strong id="routeTime">8:30 a. m.</strong></div></div>
+          <div class="detail-row"><span class="detail-icon">⌖</span><div><small>PUNTO ACTUAL DE MUESTRA</small><strong id="routePlace">Cerca del Parque de muestra</strong></div></div>
+          <div class="detail-row"><span class="detail-icon">⇢</span><div><small>SIGUIENTE PARADA</small><strong id="routeNext">Cruce de la Calle 2</strong></div></div>
+          <div class="route-progress"><div class="progress-label"><span>Avance de la ruta simulada</span><b id="progressLabel">1 de 3</b></div><div class="progress-track"><span id="progressBar"></span></div></div>
+          <button class="button primary full" id="advanceRoute">Avanzar simulación <span>→</span></button>
+          <p class="route-disclaimer">La posición cambia solo al pulsar el botón. No usa GPS, no sigue un vehículo real y no envía datos a un servidor.</p>
+        </aside>
+      </div>
+      <div class="bottom-note"><span>ⓘ</span><p>La vista esquemática demuestra interacción; no es cartografía real y no debe usarse para orientar una ruta.</p></div>
+    </section>
+
+    <section class="view" id="view-notificaciones">
+      <div class="page-heading"><div><span class="mini-label">BANDEJA DEL PROTOTIPO</span><h1>Notificaciones de demostración</h1><p>Interacciones locales para revisar avisos de ejemplo.</p></div><span class="demo-chip">SOLO EN ESTE NAVEGADOR</span></div>
+      <div class="notification-panel" id="notificationPanel"></div>
+      <button class="button quiet" id="markAllRead">Marcar avisos como revisados</button>
+      <div class="bottom-note"><span>ⓘ</span><p>No se envían notificaciones push, correo, SMS ni mensajes de WhatsApp. El estado de lectura se guarda localmente en este navegador.</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-brand"><span class="brand-mark">♻</span><span><strong>RastreaTuBasura</strong><small>Prototipo académico de Proyecto de software</small></span></div><div class="footer-right"><span>Información de demostración</span><span class="footer-dot">·</span><span>Juan Sebastián Martínez Cabezas</span></div></footer>
+
+  <dialog id="noticeDialog" class="notice-dialog"><form method="dialog"><button class="dialog-close" aria-label="Cerrar">×</button><div id="dialogContent"></div><button class="button primary" value="close">Entendido</button></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
